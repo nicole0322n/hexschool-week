@@ -1,5 +1,8 @@
 import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
 
+const url = 'https://vue3-course-api.hexschool.io/v2'; // 請加入站點
+const path = 'haru'; // 請加入個人 API Path
+
 createApp({
     data(){
       return{
