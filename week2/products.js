@@ -15,7 +15,7 @@ createApp({
             axios
             .post(`${this.url}/api/user/check`)
             .then((res) => {
-                console.log('OK!!!')
+                alert('登入驗證成功！')
                 this.getProducts();  // 成功就取得產品資訊
             })
             .catch((err) => {
@@ -28,8 +28,8 @@ createApp({
         getProducts(){
             axios
             .get(`${this.url}/api/${this.path}/admin/products`)
-              .then((response) => {
-                this.products = response.data.products;
+              .then((res) => {
+                this.products = res.data.products;
               })
               .catch((err) => {
                 alert(err.response.data.message);
@@ -39,11 +39,11 @@ createApp({
         this.productDetail = item ;
       },
     },
-    // mounted(){
-    //     // 從 cookie 裡取得 Token（Token 僅需要設定一次）
-    //     const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
-    //     // 下次進到這個網站，會將 Ｔoken 裡的資料傳給 cookie，就不需要再回傳驗證一次
-    //     axios.defaults.headers.common.Authorization = token; 
-    //     this.checkAdmin();
-    // }
+    mounted(){
+        // 從 cookie 裡取得 Token（Token 僅需要設定一次）
+        const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
+        // 下次進到這個網站，會將 Ｔoken 裡的資料傳給 cookie，就不需要再回傳驗證一次
+        axios.defaults.headers.common.Authorization = token; 
+        this.checkAdmin();
+    }
   }).mount('#app');

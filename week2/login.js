@@ -19,7 +19,7 @@ createApp({
             .then((res) => {
                 const { token, expired } = res.data; // 取出 token(登入驗證), expired(時間戳記)
                 document.cookie = `hexToken=${token}; expires=${new Date(expired)}; path=/`; // 將取出來的 token, expired 存到 cookie
-                window.location = './products.html'; // 跳轉頁面至 products.html
+                window.location = 'products.html'; // 跳轉頁面至 products.html
             })
             .catch((err) => {
                 alert(err.response.data.message);
