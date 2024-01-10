@@ -11,8 +11,7 @@ createApp({
     },
     methods:{
         login(){
-            const url = 'https://vue3-course-api.hexschool.io/v2'; // 加入站點
-                         
+            const url = 'https://vue3-course-api.hexschool.io/v2'; // 加入站點         
             const path = 'haru'; // 請加入個人 API Path
             
             axios.post(`${url}/admin/signin`, this.user)
@@ -27,12 +26,3 @@ createApp({
         },
     },
 }).mount('#app');
-
-
-
-// const emailInput = document.querySelector('#username');
-// const pwInput = document.querySelector('#password');
-// const loginBtn = document.querySelector('#loginBtn');
-
-// loginBtn.addEventListener('click', login);
-
