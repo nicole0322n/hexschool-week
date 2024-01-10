@@ -1,8 +1,5 @@
 import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
 
-const url = 'https://vue3-course-api.hexschool.io/v2'; // 請加入站點
-const path = 'haru'; // 請加入個人 API Path
-
 createApp({
     data(){
       return{
@@ -15,8 +12,10 @@ createApp({
     methods:{
         // 1 確認是否登入
         checkAdmin(){
-            axios.post(`${this.url}/api/user/check`)
+            axios
+            .post(`${this.url}/api/user/check`)
             .then((res) => {
+                console.log('OK!!!')
                 this.getProducts();  // 成功就取得產品資訊
             })
             .catch((err) => {
@@ -27,24 +26,24 @@ createApp({
 
         // 2 取得產品資訊
         getProducts(){
-            axios.get(`${this.url}/api/${this.path}/admin/products`)
-            .then((res) => {
-                console.log(res)
-                this.products = res.data.title;  // 成功就取得產品資訊
-            })
-            .catch((err) => {
+            axios
+            .get(`${this.url}/api/${this.path}/admin/products`)
+              .then((response) => {
+                this.products = response.data.products;
+              })
+              .catch((err) => {
                 alert(err.response.data.message);
-            })
+              })
         },
         selectItem(item){
         this.productDetail = item ;
       },
     },
-    mounted(){
-        // 從 cookie 裡取得 Token（Token 僅需要設定一次）
-        const token = document.cookie.replace(/(?:(?:^|.*;\s*)haruToken\s*\=\s*([^;]*).*$)|^.*$/,"$1",);
-        // 下次進到這個網站，會將 Ｔoken 裡的資料傳給 cookie，就不需要再回傳驗證一次
-        axios.defaults.headers.common['Authorization'] = token; 
-        this.checkAdmin();
-    }
+    // mounted(){
+    //     // 從 cookie 裡取得 Token（Token 僅需要設定一次）
+    //     const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
+    //     // 下次進到這個網站，會將 Ｔoken 裡的資料傳給 cookie，就不需要再回傳驗證一次
+    //     axios.defaults.headers.common.Authorization = token; 
+    //     this.checkAdmin();
+    // }
   }).mount('#app');
