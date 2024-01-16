@@ -19,7 +19,7 @@ createApp({
                 this.getProducts();  // 成功就取得產品資訊
             })
             .catch((err) => {
-                alert(err.response.data.message);
+                alert(err.data.message);
                 window.location = 'login.html'; // 錯誤跳回登入頁面
             })
         },
@@ -32,7 +32,7 @@ createApp({
                 this.products = res.data.products;
               })
               .catch((err) => {
-                alert(err.response.data.message);
+                alert(err.data.message);
               })
         },
         selectItem(item){
