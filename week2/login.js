@@ -1,5 +1,5 @@
 import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
-
+ 
 createApp({
     data(){
         return{
@@ -10,6 +10,7 @@ createApp({
         }
     },
     methods:{
+        // 按下登入，axios 驗證 帳密資料，確認無誤跳轉至商品頁面
         login(){
             const url = 'https://vue3-course-api.hexschool.io/v2'; // 加入站點         
             const path = 'haru'; // 加入個人 API Path
