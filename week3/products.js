@@ -9,9 +9,10 @@ const app = createApp({
       apiUrl: 'https://vue3-course-api.hexschool.io/v2',
       apiPath: 'haru',
       products: [], // 存放產品資料 空陣列
-      productDetail:{}, // 暫存產品明細資料 空物件
       isNew: false, // 分辨是 新增 or 編輯，以便 API 判斷
-      tempProduct:{}, // 預期 modal 開啟時，帶入的資料
+      tempProduct:{ // 預期 modal 開啟時，帶入的資料
+        imagesUrl: [],
+      }, 
     }
   },
   methods:{
@@ -32,7 +33,7 @@ const app = createApp({
     // 2 取得產品資訊
     getProducts(){
         axios
-        .get(`${this.apiUrl}/api/${this.apiPath}/admin/products`)
+        .get(`${this.apiUrl}/api/${this.apiPath}/admin/products/all`)
           .then((res) => {
             this.products = res.data.products;
           })
@@ -42,16 +43,18 @@ const app = createApp({
     },
     
     // 3 open modal
-    openModel(status, item){  // status: 分辨 new, edit, delete ; item: 分辨帶入資料
-      if( status === 'new' ){
-        this.tempProduct = {}; // 先清空 -> 預期 modal 開啟時，帶入的資料
+    openModel(isNew, item){  // status: 分辨 new, edit, delete ; item: 分辨帶入資料
+      if( isNew === 'new' ){
+        this.tempProduct = {
+          imagesUrl: [],
+        }; // 先清空 -> 預期 modal 開啟時，帶入的資料
         this.isNew = true;
         productModal.show();
-      } else if( status === 'edit' ){
+      } else if( isNew === 'edit' ){
         this.tempProduct = { ...item };
         this.isNew = false;
         productModal.show();
-      } else if ( status === 'delete' ){
+      } else if ( isNew === 'delete' ){
         this.tempProduct = { ...item };
         delProductModal.show();
       }
@@ -59,11 +62,11 @@ const app = createApp({
 
     // 4 確定新增 btn -> 新增產品傳進API
     updateProduct(){
-      let url = `${this.apiAul}/api/${apiPath}/admin/product/${this.tempProduct.id}`;
+      let url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.tempProduct.id}`;
       let http = 'put';
 
       if(this.isNew){
-        url = `${this.apiAul}/api/${this.apiPath}/admin/product`;
+        url = `${this.apiUrl}/api/${this.apiPath}/admin/product`;
         http = 'post';
       }
 
@@ -71,27 +74,33 @@ const app = createApp({
       .then((res) => {
         alert(res.data.message);
         productModal.hide();
-        this.getdata();  // 取得所有產品函式
+        this.getProducts();  // 取得所有產品函式
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        alert(err.data.message);
       })
     },
 
     // 5 確定刪除 btn -> 刪除產品
     delProduct(){
-      let url = `${this.apiUrl}/v2/api/${this.apiPath}/admin/product/${this.tempProduct.id}`;
+      let url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.tempProduct.id}`;
 
       axios.delete(url)
       .then((res) => {
         alert(res.data.message);
         delProductModal.hide();
-        this.getData();
+        this.getProducts();
       })
       .catch((err) => {
         alert(err.response.data.message);
       })
     },
+
+    // 6 新增圖片
+    createImages(){
+      this.tempProduct.imagesUrl = [];
+      this.tempProduct.imagesUrl.push('');
+    }
   },
   mounted(){
       // 1 取得 Token
