@@ -24,7 +24,10 @@
 <h2>第三週 Week3</h2>
 <h3>產品頁面</h3>
 <ul>
-  <li>新增・修改・刪除 API</li>
+  <li>新增產品 API</li>
+  <li>修改產品 API</li>
+  <li>刪除產品 API</li>
+  <li>bootstrap - Modal應用</li>
 </ul>
 
 
