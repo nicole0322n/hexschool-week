@@ -15,7 +15,7 @@
     <div id="app">
       <div class="container">
         <div class="text-end mt-4">
-          <button type="button" class="btn btn-primary" @click="openModel">
+          <button type="button" class="btn btn-primary" @click="openModel('new')">
             建立新的產品
           </button>
         </div>
@@ -52,10 +52,10 @@
               </td>
               <td>
                 <div class="btn-group">
-                  <button type="button" class="btn btn-outline-primary btn-sm" @click="confirmEdit(item, index)">
+                  <button type="button" class="btn btn-outline-primary btn-sm" @click="openModel('edit', item)">
                     編輯
                   </button>
-                  <button type="button" class="btn btn-outline-danger btn-sm" @click="removeItem(id)">
+                  <button type="button" class="btn btn-outline-danger btn-sm" @click="openModel('delete', item)">
                     刪除
                   </button>
                 </div>
@@ -65,6 +65,7 @@
         </table>
       </div>
       <!-- Modal -->
+      <!-- 新增產品 -->
       <div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
            aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -155,13 +156,14 @@
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                 取消
               </button>
-              <button type="button" class="btn btn-primary">
+              <button type="button" class="btn btn-primary" @click="updateProduct">
                 確認
               </button>
             </div>
           </div>
         </div>
       </div>
+      <!-- 刪除產品 -->
       <div id="delProductModal" ref="delProductModal" class="modal fade" tabindex="-1"
            aria-labelledby="delProductModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -180,7 +182,7 @@
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                 取消
               </button>
-              <button type="button" class="btn btn-danger">
+              <button type="button" class="btn btn-danger" @click="delProduct">
                 確認刪除
               </button>
             </div>

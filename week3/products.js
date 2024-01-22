@@ -1,21 +1,24 @@
 const { createApp } = Vue;
 
 let productModal = null;
+let delProductModal = null;
 
 const app = createApp({
   data(){
     return{
-      url: 'https://vue3-course-api.hexschool.io/v2',
-      path: 'haru',
+      apiUrl: 'https://vue3-course-api.hexschool.io/v2',
+      apiPath: 'haru',
       products: [], // 存放產品資料 空陣列
       productDetail:{}, // 暫存產品明細資料 空物件
+      isNew: false, // 分辨是 新增 or 編輯，以便 API 判斷
+      tempProduct:{}, // 預期 modal 開啟時，帶入的資料
     }
   },
   methods:{
     // 1 確認是否登入
     checkAdmin(){
         axios
-        .post(`${this.url}/api/user/check`)
+        .post(`${this.apiUrl}/api/user/check`)
         .then((res) => {
             // alert('登入驗證成功！')
             this.getProducts();  // 成功就取得產品資訊
@@ -29,7 +32,7 @@ const app = createApp({
     // 2 取得產品資訊
     getProducts(){
         axios
-        .get(`${this.url}/api/${this.path}/admin/products`)
+        .get(`${this.apiUrl}/api/${this.apiPath}/admin/products`)
           .then((res) => {
             this.products = res.data.products;
           })
@@ -38,28 +41,56 @@ const app = createApp({
           })
     },
     
-    // 3 產品詳細資訊
-    selectItem(item){
-    this.productDetail = item ;
+    // 3 open modal
+    openModel(status, item){  // status: 分辨 new, edit, delete ; item: 分辨帶入資料
+      if( status === 'new' ){
+        this.tempProduct = {}; // 先清空 -> 預期 modal 開啟時，帶入的資料
+        this.isNew = true;
+        productModal.show();
+      } else if( status === 'edit' ){
+        this.tempProduct = { ...item };
+        this.isNew = false;
+        productModal.show();
+      } else if ( status === 'delete' ){
+        this.tempProduct = { ...item };
+        delProductModal.show();
+      }
     },
 
-    // 4 open modal
-    openModel(){
-      productModal.show();
+    // 4 確定新增 btn -> 新增產品傳進API
+    updateProduct(){
+      let url = `${this.apiAul}/api/${apiPath}/admin/product/${this.tempProduct.id}`;
+      let http = 'put';
+
+      if(this.isNew){
+        url = `${this.apiAul}/api/${this.apiPath}/admin/product`;
+        http = 'post';
+      }
+
+      axios[http](url, { data:this.tempProduct })
+      .then((res) => {
+        alert(res.data.message);
+        productModal.hide();
+        this.getdata();  // 取得所有產品函式
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      })
     },
 
-    // 5 新增產品
-    addItem(){
-    },
+    // 5 確定刪除 btn -> 刪除產品
+    delProduct(){
+      let url = `${this.apiUrl}/v2/api/${this.apiPath}/admin/product/${this.tempProduct.id}`;
 
-    // 6 刪除產品
-    removeItem(){
-
-    },
-
-    // 7 編輯產品
-    confirmEdit(){
-
+      axios.delete(url)
+      .then((res) => {
+        alert(res.data.message);
+        delProductModal.hide();
+        this.getData();
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      })
     },
   },
   mounted(){
@@ -70,8 +101,14 @@ const app = createApp({
       axios.defaults.headers.common.Authorization = token; 
       this.checkAdmin();
 
-      // 2 建立 Modal 實體
-      productModal = new bootstrap.Modal(document.getElementById('productModal'), {
+      // 2 建立 Modal 實體：open
+      productModal = new bootstrap.Modal(document.querySelector('#productModal'), {
+        keyboard: false,      // 禁止用 esc 關閉視窗
+        backdrop: 'static'    // 禁止點空白處關閉視窗
+      });
+
+      // 3 建立 Modal 實體：delete
+      delProductModal = new bootstrap.Modal(document.querySelector('#delProductModal'), {
         keyboard: false,      // 禁止用 esc 關閉視窗
         backdrop: 'static'    // 禁止點空白處關閉視窗
       })
