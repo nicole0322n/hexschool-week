@@ -55,7 +55,8 @@ const app = createApp({
         this.isNew = false;
         productModal.show();
       } else if ( isNew === 'delete' ){
-        this.tempProduct = { ...item };
+        // this.tempProduct = { ...item };  // X
+        this.tempProduct = item ;  // O 修改：不用修改內容，所以不用淺拷貝
         delProductModal.show();
       }
     },

@@ -42,7 +42,7 @@
           </thead>
           <tbody>
             <!-- 使用 v-for 將產品渲染到畫面 -->
-            <tr v-for="item in products" :key="item.name">
+            <tr v-for="item in products" :key="item.title_123">
               <td>{{ item.category }}</td>
               <td>{{ item.title }}</td>
               <td class="text-end">{{ item.origin_price }} 元</td>
@@ -93,28 +93,29 @@
                  
                   <h3 class="mb-3">多圖新增</h3>
                   <!-- Array.isArray()：辨別是否為陣列 -->
-                  <div v-if="Array.isArray(tempProduct.imagesUrl)">
+                  <!-- 只要用 v-if 來判斷區塊是否顯示，可以改為 template 標籤，讓 HTML 結構更加精簡 -->
+                  <template v-if="Array.isArray(tempProduct.imagesUrl)">
                     <div class="mb-1" v-for="(image, key) in tempProduct.imagesUrl" :key="key">
                       <label for="`imagesUrl${key}`" class="form-label"></label>
                       <input id="`imagesUrl${key}`" v-model="tempProduct.imagesUrl[key]" type="text" class="form-control mb-3">
                       <img :src="image" alt="" class="img-fluid">
                     </div>
-                    <div v-if="!tempProduct.imagesUrl.length || tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]">
+                    <template v-if="!tempProduct.imagesUrl.length || tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]">
                     <!-- 如果 imagesUrl 陣列的長度 = 0(沒有圖片)，或是，imagesUrl 陣列的最後一個元素有值（有圖片），則可以再新增圖片 -->
                       <button class="btn btn-outline-primary btn-sm d-block w-100" @click="tempProduct.imagesUrl.push('')">新增圖片</button>
-                    </div>
-                    <div v-else>
+                    </template>
+                    <template v-else>
                     <!-- imagesUrl 陣列的最後一個元素沒有值（圖片被刪掉的情況），將 input 輸入框刪除 -->
                       <button class="btn btn-outline-danger btn-sm d-block w-100" @click="tempProduct.imagesUrl.pop()">刪除圖片</button>
-                    </div>
-                  </div>
-                  <div v-else>
+                    </template>
+                  </template>
+                  <template v-else>
                   <!-- 1. 上方 v-if="Array.isArray(tempProduct.imagesUrl) 若不是陣列，則顯示以下區塊。
                        2. createImages -> tempProduct.imagesUrl新增空陣列 ＆ 空的 input 圖片輸入框。 -->
                     <button class="btn btn-outline-primary btn-sm d-block w-100" @click="createImages">
                       新增圖片
                     </button>
-                  </div>
+                  </template>
                 </div>
                 <div class="col-sm-8">
                   <div class="mb-3">
