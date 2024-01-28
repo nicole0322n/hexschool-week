@@ -92,7 +92,7 @@
                   </div>
                  
                   <h3 class="mb-3">多圖新增</h3>
-                  <!-- Array.isArray()：辨別是否有 imagesUrl 陣列，有些品項沒有多圖-->
+                  <!-- Array.isArray()：辨別是否為陣列 -->
                   <!-- 只要用 v-if 來判斷區塊是否顯示，可以改為 template 標籤，讓 HTML 結構更加精簡 -->
                   <template v-if="Array.isArray(tempProduct.imagesUrl)">
                     <div class="mb-1" v-for="(image, key) in tempProduct.imagesUrl" :key="key">
@@ -219,7 +219,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
             integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
             crossorigin="anonymous"></script>
-    <script src="products.js"></script>
+    <script src="products.js" type="module"></script>
     <!-- <script>const { createApp } = Vue;</script> -->
   </body>
 

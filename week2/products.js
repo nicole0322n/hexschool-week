@@ -44,6 +44,7 @@ createApp({
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
         // 下次進到這個網站，會將 Ｔoken 裡的資料傳給 cookie，就不需要再回傳驗證一次
         axios.defaults.headers.common.Authorization = token; 
-        this.checkAdmin();
+        
+        this.getProducts();
     }
   }).mount('#app');

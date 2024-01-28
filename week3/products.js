@@ -1,8 +1,5 @@
 const { createApp } = Vue;
 
-let productModal = null;
-let delProductModal = null;
-
 const app = createApp({
   data(){
     return{
@@ -10,9 +7,11 @@ const app = createApp({
       apiPath: 'haru',
       products: [], // 存放產品資料 空陣列
       isNew: false, // 分辨是 新增 or 編輯，以便 API 判斷
-      tempProduct:{ // 預期 modal 開啟時，帶入的資料
+      tempProduct: { // 預期 modal 開啟時，帶入的資料
         imagesUrl: [], // 預先定義，避免出錯（可以情況決定要不要寫）
       }, 
+      productModal: null,
+      delProductModal: null,
     }
   },
   methods:{
@@ -48,16 +47,17 @@ const app = createApp({
         this.tempProduct = {
           imagesUrl: [],
         }; // 先清空 -> 預期 modal 開啟時，帶入的資料
-        this.isNew = true;
-        productModal.show();
+        this.isNew = true; // 是新的
+         this.productModal.show();
+        // productModal.show();
       } else if( isNew === 'edit' ){
         this.tempProduct = { ...item };
-        this.isNew = false;
-        productModal.show();
+        this.isNew = false; // 不是新的
+        this.productModal.show(); 
       } else if ( isNew === 'delete' ){
         // this.tempProduct = { ...item };  // X
         this.tempProduct = item ;  // O 修改：不用修改內容，所以不用淺拷貝
-        delProductModal.show();
+       this.delProductModal.show();
       }
     },
 
@@ -74,8 +74,9 @@ const app = createApp({
       axios[http](url, { data:this.tempProduct })  // axios[http] = axios.post 括弧記法：用在 特殊字元 或 帶入變數。
       .then((res) => {
         alert(res.data.message);
-        productModal.hide();
+        this.productModal.hide();
         this.getProducts();  // 取得所有產品函式
+        this.tempProduct = {}; // 清空輸入框
       })
       .catch((err) => {
         alert(err.data.message);
@@ -89,7 +90,7 @@ const app = createApp({
       axios.delete(url)
       .then((res) => {
         alert(res.data.message);
-        delProductModal.hide();
+        this.delProductModal.hide();
         this.getProducts();
       })
       .catch((err) => {
@@ -109,16 +110,17 @@ const app = createApp({
       const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
       // 下次進到這個網站，會將 Ｔoken 裡的資料傳給 cookie，就不需要再回傳驗證一次
       axios.defaults.headers.common.Authorization = token; 
-      this.checkAdmin();
+      
+      this.getProducts();
 
       // 2 建立 Modal 實體：open
-      productModal = new bootstrap.Modal(document.querySelector('#productModal'), {
+      this.productModal = new bootstrap.Modal(document.querySelector('#productModal'), {
         keyboard: false,      // 禁止用 esc 關閉視窗
         backdrop: 'static'    // 禁止點空白處關閉視窗
       });
 
       // 3 建立 Modal 實體：delete
-      delProductModal = new bootstrap.Modal(document.querySelector('#delProductModal'), {
+      this.delProductModal = new bootstrap.Modal(document.querySelector('#delProductModal'), {
         keyboard: false,      // 禁止用 esc 關閉視窗
         backdrop: 'static'    // 禁止點空白處關閉視窗
       })
