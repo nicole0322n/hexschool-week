@@ -15,6 +15,7 @@ const app = createApp({
     const tempProduct = ref({ // 預期 modal 開啟時，帶入的資料
       imagesUrl: [], // 預先定義，避免出錯（可以情況決定要不要寫）
     });
+    const pages = ref({});
     
   
   
@@ -33,15 +34,17 @@ const app = createApp({
     };
 
     // 2 取得產品資訊
-    const getProducts = () => {
+    const getProducts = ( page = 1 ) => {  // 參數設值：點進網頁，首先都會在 page1 
       axios
-      .get(`${apiUrl}/api/${apiPath}/admin/products/all`)
+      .get(`${apiUrl}/api/${apiPath}/admin/products?page=${page}`)
       .then((res) => {
         products.value = res.data.products;
+        pages.value = res.data.pagination;
+        console.log(res.data);
       })
       .catch((err) => {
-        alert(err.data.message);
-      })
+        alert(err.response.data.message);
+      });
     };
     
     // 3 open modal
@@ -130,6 +133,7 @@ const app = createApp({
 
 
     return{
+      getProducts,
       products,
       status,
       tempProduct,
@@ -138,6 +142,7 @@ const app = createApp({
       delProduct,
       createImages,
       isNew,
+      pages,
     };
   },
 });
