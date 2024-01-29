@@ -1,4 +1,7 @@
 import { createApp, ref, onMounted } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+import pagination from './pagination.js';
+import delProductsModal from './delProduct.js';
+import productsModal from './productsModal.js';
 
 let productModal = null;
 let delProductModal = null;
@@ -147,4 +150,7 @@ const app = createApp({
   },
 });
 
+app.component('productsModal', productsModal);
+app.component('delProductsModal', delProductsModal);
+app.component('pagination', pagination);
 app.mount('#app');
