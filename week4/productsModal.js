@@ -1,6 +1,7 @@
+
 export default {
   props: ['tempProduct', 'updateProduct', 'isNew'],
-    template: `
+  template: `
     <!-- 在 input 綁上 v-model，編輯產品時，會帶上產品資料 -->
     <div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
     aria-hidden="true">

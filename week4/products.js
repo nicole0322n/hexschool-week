@@ -53,9 +53,9 @@ const app = createApp({
     // 3 open modal
     const openModel = (isNew, item) => {  // status: 分辨 new, edit, delete ; item: 分辨帶入資料
       if( isNew === 'new' ){
-        tempProduct.value = {
+        tempProduct.value = {  // 先清空 -> 預期 modal 開啟時，帶入的資料
           imagesUrl: [],
-        }; // 先清空 -> 預期 modal 開啟時，帶入的資料
+        }; 
         status.value = true;
         productModal.show();
       } else if( isNew === 'edit' ){
@@ -125,7 +125,7 @@ const app = createApp({
       productModal = new bootstrap.Modal(document.querySelector('#productModal'), {
         keyboard: false,      // 禁止用 esc 關閉視窗
         backdrop: 'static'    // 禁止點空白處關閉視窗
-      });
+      }); 
   
       // 3 建立 Modal 實體：delete
       delProductModal = new bootstrap.Modal(document.querySelector('#delProductModal'), {
