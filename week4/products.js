@@ -1,7 +1,7 @@
 import { createApp, ref, onMounted } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
-import pagination from './pagination.js';
-import delProductsModal from './delProduct.js';
-import productsModal from './productsModal.js';
+import pagination from './component/pagination.js';
+import delProductsModal from './component/delProduct.js';
+import productsModal from './component/productsModal.js';
 
 let productModal = null;
 let delProductModal = null;
@@ -43,7 +43,6 @@ const app = createApp({
       .then((res) => {
         products.value = res.data.products;
         pages.value = res.data.pagination;
-        console.log(res.data);
       })
       .catch((err) => {
         alert(err.response.data.message);
