@@ -13,7 +13,6 @@ const app = createApp({
     const apiPath = 'haru';
     
     const products = ref([]); // 存放產品資料 空陣列
-    const status = ref(false); // 分辨是 新增 or 編輯，以便 API 判斷
     const isNew = ref(false); // 分辨是 新增 or 編輯，以便 API 判斷
     const tempProduct = ref({ // 預期 modal 開啟時，帶入的資料
       imagesUrl: [], // 預先定義，避免出錯（可以情況決定要不要寫）
@@ -50,18 +49,18 @@ const app = createApp({
     };
     
     // 3 open modal
-    const openModel = (isNew, item) => {  // status: 分辨 new, edit, delete ; item: 分辨帶入資料
-      if( isNew === 'new' ){
+    const openModel = (type, item) => {  // status: 分辨 new, edit, delete ; item: 分辨帶入資料
+      if( type === 'new' ){
         tempProduct.value = {  // 先清空 -> 預期 modal 開啟時，帶入的資料
           imagesUrl: [],
         }; 
-        status.value = true;
+        isNew.value = true;
         productModal.show();
-      } else if( isNew === 'edit' ){
+      } else if( type === 'edit' ){
         tempProduct.value = { ...item };
-        status.value = false;
+        isNew.value = false;
         productModal.show();
-      } else if ( isNew === 'delete' ){
+      } else if ( type === 'delete' ){
         // tempProduct.value = { ...item };  // X
         tempProduct.value = item ;  // O 修改：不用修改內容，所以不用淺拷貝
         delProductModal.show();
@@ -73,7 +72,7 @@ const app = createApp({
       let url = `${apiUrl}/api/${apiPath}/admin/product/${tempProduct.value.id}`;
       let http = 'put';
 
-      if(status.value){
+      if(isNew.value){
         url = `${apiUrl}/api/${apiPath}/admin/product`;
         http = 'post';
       }
@@ -137,7 +136,6 @@ const app = createApp({
     return{
       getProducts,
       products,
-      status,
       tempProduct,
       openModel,
       updateProduct,
